@@ -19,7 +19,7 @@
     display: none;
 }
 
-#top-left-box{
+#ochiai{
     position: relative;
     width: 150px;
     height: 120px;
@@ -33,7 +33,7 @@
     
 }
 
-#top-right-box{
+#bass{
     position: relative;
     width: 150px;
     height: 120px;
@@ -47,7 +47,7 @@
     border: solid 1px white;
 }
 
-#bottom-left-box{
+#matsunaka{
     position: relative;
     width: 150px;
     height: 120px;
@@ -60,7 +60,7 @@
     border: solid 1px white;
 }
 
-#bottom-right-box{
+#murakami{
     position: relative;
     width: 150px;
     height: 120px;
@@ -73,27 +73,27 @@
     border: solid 1px white;
 }
 
-#top-left-box:hover{
+#ochiai:hover{
     background-color: rgb(31, 8, 123);
     opacity: 70%;
 }
 
-#top-right-box:hover{
+#bass:hover{
     background-color: rgb(31, 8, 123);
     opacity: 70%;
 }
 
-#bottom-left-box:hover{
+#matsunaka:hover{
     background-color: rgb(31, 8, 123);
     opacity: 70%;
 }
 
-#bottom-right-box:hover{
+#murakami:hover{
     background-color: rgb(31, 8, 123);
     opacity: 70%;
 }
 
-#result,#stop-game,#status{
+#result,#stop-game,#status,#total,#max,#history{
     text-align: center;
     font-size: large;
 }
