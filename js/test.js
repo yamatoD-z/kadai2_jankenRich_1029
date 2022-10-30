@@ -43,7 +43,7 @@
     // let mishit =0;
     // let hit_rate = (single+double+triple+homerun)/(daseki-fourball);
 
-    let ochiai_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0};
+    let ochiai_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
 
 
     //  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
@@ -74,13 +74,10 @@
     let daseki =0;
     daseki++
 
-
-    // for文でアウト27個になるまで繰り返し
-
-    // アウトが３未満なら、交代という表示を出さない
-    if(out_num<3){
-        $("#stop-game").text("");
-    }
+    // // アウトが３未満なら、交代という表示を出さない
+    // if(out_num<3){
+    //     $("#stop-game").text("");
+    // }
     
     let probability = Math.random() * 100;
     let record_view =ochiai_record_standard;
@@ -144,18 +141,20 @@
         ochiai_result.mishit ++;
         console.log("アウト（ゴロ、フライ）");
     }
-     // カウンタを動かす
-    if(out_num===3){
-        $("#stop-game").text("3アウト交代");
-    }
+    //  // カウンタを動かす
+    // if(out_num===3){
+    //     $("#stop-game").text("3アウト交代");
+    // }
 
     console.log(out_num,'out');
     console.log(score,'score');
     console.log(runner,'runner');
-    let averagecount = Math.floor(score/(inning /9));
+    let averagecount = Math.floor(score/(inning /9)*100)/100;
+    ochiai_result.average_score=averagecount;
     let hit_rate = Math.floor(
         (ochiai_result.single+ochiai_result.double+ochiai_result.triple+ochiai_result.homerun)/(ochiai_result.daseki-ochiai_result.fourball)*1000
         );
+    ochiai_result.hit_rate =hit_rate;
      // カウンタを表示
     $("#status_ochiai").text('落合1985：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とられています');
     $("#total_ochiai").text('落合1985：全'+ochiai_result.daseki+'打席のうち、1塁打'+ochiai_result.single+'回、2塁打'+ochiai_result.double+'回、3塁打'+ochiai_result.triple+'回、ホームラン'+ochiai_result.homerun+'回、三振'+ochiai_result.strikeout+'回、四球'+ochiai_result.fourball+'回、凡打'+ochiai_result.mishit+'回、打率は.'+hit_rate+'です。');
@@ -200,6 +199,32 @@
         ochiai_simulation();
         }
     });
+
+    // 4.総データを記録
+    $('#ochiai_add').on('click',function(){
+        Object.keys(ochiai_result).forEach(function(key){
+        localStorage.setItem('ochiai_result_'+key,ochiai_result[key]);
+        });
+        alert("successfully saved");
+        });
+
+    // 5.総データを破棄
+    $('#ochiai_delete').on('click',function(){
+        Object.keys(ochiai_result).forEach(function(key){
+        localStorage.removeItem('ochiai_result_'+key);
+        });
+        alert("successfully deleted");
+        });
+
+    // 6.データを継承（ローカルストレージの内容を取り込む）
+    $('#ochiai_inherit').on('click',function(){
+        Object.keys(ochiai_result).forEach(function(key){
+        ochiai_result[key]=localStorage.getItem('ochiai_result_'+key);
+        });
+        console.log(ochiai_result);
+        alert("successfully inherited");
+        });
+
 
     // 一気に結果が出てしまうのも味気ないので、経過を見れるようにtimeoutを使うも、変わらず。しかもエラーが残る。
     // $('#ochiai_hundred').on('click',function(){
