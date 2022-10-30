@@ -1,3 +1,7 @@
+h4{
+    margin: 2px;
+}
+
 #wrapper{
     display: flex;
     width:100%;
@@ -17,7 +21,7 @@
     background-color: aquamarine;
     opacity: 100%;
     border: solid 1px white;
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/ochiai.jpg");
     background-size: cover;
     
 }
@@ -33,7 +37,7 @@
     opacity: 100%;
     line-height: 20px;    
     border: solid 1px white;    
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/bass.jpg");
     background-size: cover;
 }
 
@@ -47,7 +51,7 @@
     background-color: aquamarine;
     opacity: 100%;    
     border: solid 1px white;    
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/matsunaka.jpg");
     background-size: cover;
 }
 
@@ -61,7 +65,7 @@
     background-color: aquamarine;
     opacity: 100%;
     border: solid 1px white;    
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/murakami.jpg");
     background-size: cover;
 }
 
@@ -110,7 +114,7 @@
     opacity: 100%;
     border: solid 1px white;
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/ochiai.jpg");
     background-size: cover;
     
 }
@@ -127,7 +131,7 @@
     line-height: 20px;    
     border: solid 1px white;  
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/bass.jpg");
     background-size: cover;
 }
 
@@ -142,7 +146,7 @@
     opacity: 100%;    
     border: solid 1px white; 
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/matsunaka.jpg");
     background-size: cover;
 }
 
@@ -157,7 +161,7 @@
     opacity: 100%;
     border: solid 1px white;   
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/murakami.jpg");
     background-size: cover; 
 }
 
@@ -182,7 +186,7 @@
     opacity: 100%;
     border: solid 1px white;
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/ochiai.jpg");
     background-size: cover;
     
 }
@@ -199,7 +203,7 @@
     line-height: 20px;    
     border: solid 1px white; 
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/bass.jpg");
     background-size: cover; 
 }
 
@@ -214,7 +218,7 @@
     opacity: 100%;    
     border: solid 1px white; 
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/matsunaka.jpg");
     background-size: cover;
 }
 
@@ -229,6 +233,6 @@
     opacity: 100%;
     border: solid 1px white; 
     
-    background-image:url("../img/backgroud.jpg");
+    background-image:url("../img/murakami.jpg");
     background-size: cover;   
 }

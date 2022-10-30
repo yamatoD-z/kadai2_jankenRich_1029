@@ -48,8 +48,8 @@
     let ochiai_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0};
 
 
-    //  左から、［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
-    let ochiai_record=[77,98,99,155,283,408,612];
+    //  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
+    let ochiai_record=[92,116,117,169,209,313,568];
     console.log(ochiai_record);
 
     //  乱数は100で統一するので、上記結果を標準化
@@ -71,6 +71,7 @@
 
    // 関数の切り出し
     function ochiai_simulation(){
+
     ochiai_result.daseki ++;
     let daseki =0;
     daseki++
@@ -126,6 +127,7 @@
     }else if(probability<record_view[4]){
         $("#result").text("三振");
         out_num++;
+        out_num_total++;
         ochiai_result.strikeout ++;
         console.log("三振");
     }else if(probability<record_view[5]){            
@@ -140,6 +142,7 @@
     }else if(probability<record_view[6]){
         $("#result").text("アウト（ゴロ、フライ）");
         out_num++;
+        out_num_total++;
         ochiai_result.mishit ++;
         console.log("アウト（ゴロ、フライ）");
     }
@@ -184,10 +187,19 @@
         ochiai_simulation();
     });
 
+    // 2.9イニング毎計算。whileでやるしかない。
+    $('#ochiai_nine').on('click',function(){
+        out_num_total=0;
+        while(out_num_total<27){
+        ochiai_simulation();
+        }
+    });
+
     // 3.100打席毎計算
     $('#ochiai_hundred').on('click',function(){
         for(let i =0; i<100; i++){
-        ochiai_simulation()
+            
+        ochiai_simulation();
         }
     });
 
