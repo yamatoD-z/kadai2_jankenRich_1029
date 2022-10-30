@@ -1,76 +1,68 @@
-#catch{
-    margin:auto;
-    width: 500px;
-    height: 500px;
-    background-image:url("../img/backgroud.jpg");
-    background-size: cover;
-
-}
-
-#homerun{
-    margin: auto;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 1200px;
-    height: auto;
-    /* 特定サイズを指定すると、下が足りないとかあったが、autoにしたら解決 */
-    z-index: 10;
-    display: none;
+#wrapper{
+    display: flex;
+    width:100%;
+    height:120px;
+    border: solid 1px gray;
+    align-items: center;
+    justify-content: center;
 }
 
 #ochiai{
-    position: relative;
-    width: 150px;
-    height: 120px;
-    left: 100px;
-    top: 180px;
+    width: 23%;
+    height: 100px;
+    left: 3%;
+    top: 0px;
     color: aliceblue;
     text-align: center;
     background-color: aquamarine;
-    opacity: 40%;
+    opacity: 100%;
     border: solid 1px white;
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
     
 }
 
 #bass{
-    position: relative;
-    width: 150px;
-    height: 120px;
-    left: 250px;
-    top: 58px;
+    width: 23%;
+    height: 100px;
+    left: 27%;
+    top: 0px;
     color: aliceblue;
     text-align: center;
     background-color: aquamarine;
-    opacity: 40%;
+    opacity: 100%;
     line-height: 20px;    
-    border: solid 1px white;
+    border: solid 1px white;    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
 }
 
 #matsunaka{
-    position: relative;
-    width: 150px;
-    height: 120px;
-    left: 100px;
-    top: 58px;
+    width: 23%;
+    height: 100px;
+    left: 51%;
+    top: 0px;
     color: aliceblue;
     text-align: center;
     background-color: aquamarine;
-    opacity: 40%;    
-    border: solid 1px white;
+    opacity: 100%;    
+    border: solid 1px white;    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
 }
 
 #murakami{
-    position: relative;
-    width: 150px;
-    height: 120px;
-    left: 250px;
-    top: -64px;
+    width: 23%;
+    height: 100px;
+    left: 75%;
+    top: 0px;
     color: aliceblue;
     text-align: center;
     background-color: aquamarine;
-    opacity: 40%;
-    border: solid 1px white;
+    opacity: 100%;
+    border: solid 1px white;    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
 }
 
 #ochiai:hover{
@@ -96,4 +88,147 @@
 #result,#stop-game,#status,#total,#max,#history{
     text-align: center;
     font-size: large;
+}
+
+#wrapper_nine{
+    display: flex;
+    width:100%;
+    height:120px;
+    border: solid 1px gray;
+    align-items: center;
+    justify-content: center;
+}
+
+#ochiai_nine{
+    width: 23%;
+    height: 100px;
+    left: 3%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;
+    border: solid 1px white;
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
+    
+}
+
+#bass_nine{
+    width: 23%;
+    height: 100px;
+    left: 27%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;
+    line-height: 20px;    
+    border: solid 1px white;  
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
+}
+
+#matsunaka_nine{
+    width: 23%;
+    height: 100px;
+    left: 51%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;    
+    border: solid 1px white; 
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
+}
+
+#murakami_nine{
+    width: 23%;
+    height: 100px;
+    left: 75%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;
+    border: solid 1px white;   
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover; 
+}
+
+
+#wrapper_hundred{
+    display: flex;
+    width:100%;
+    height:120px;
+    border: solid 1px gray;
+    align-items: center;
+    justify-content: center;
+}
+
+#ochiai_hundred{
+    width: 23%;
+    height: 100px;
+    left: 3%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;
+    border: solid 1px white;
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
+    
+}
+
+#bass_hundred{
+    width: 23%;
+    height: 100px;
+    left: 27%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;
+    line-height: 20px;    
+    border: solid 1px white; 
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover; 
+}
+
+#matsunaka_hundred{
+    width: 23%;
+    height: 100px;
+    left: 51%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;    
+    border: solid 1px white; 
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;
+}
+
+#murakami_hundred{
+    width: 23%;
+    height: 100px;
+    left: 75%;
+    top: 0px;
+    color: aliceblue;
+    text-align: center;
+    background-color: aquamarine;
+    opacity: 100%;
+    border: solid 1px white; 
+    
+    background-image:url("../img/backgroud.jpg");
+    background-size: cover;   
 }
