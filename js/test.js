@@ -20,10 +20,12 @@
 // 実際の結果をベースにパラメータを設定。
 // 結果は1球ごとではなく、1打席毎。
 // 確率は、年間結果を踏まえて、［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球、死球、アウト（ゴロ、フライ）］
-// // 【精緻化や改善点】
-// １．投球数、ヒット数など1試合の合計値、それに基づく打率などの表示。
-// 2．選手毎の結果累計をローカルストレージに保存させる。
-// 3.ヒットの内容を踏まえた進塁の考慮(ランナー3人いて二塁打なら２点はいる、など)
+// // もはや、1球ずつクリックする意味もないので、選手を選んだら、勝手にシミュレーションが始まる。
+// 【精緻化や改善点】
+// １．9回で終了
+// ２．投球数、ヒット数など1試合の合計値、それに基づく打率などの表示。
+// ３．選手毎の結果累計、最高の結果をローカルストレージに保存させる。
+// 4.ヒットの内容を踏まえた進塁の考慮
 
 //    各種カウントの設定
     let out_num = 0;
@@ -158,7 +160,7 @@
         );
      // カウンタを表示
     $("#status_ochiai").text('落合1985：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とられています');
-    $("#total_ochiai").text('落合1985：全'+ochiai_result.daseki+'打席のうち、1塁打'+ochiai_result.single+'回、2塁打'+ochiai_result.double+'回、3塁打'+ochiai_result.triple+'回、ホームラン'+ochiai_result.homerun+'回、三振'+ochiai_result.strikeout+'回、四球'+ochiai_result.fourball+'回、凡打'+ochiai_result.mishit+'回、打率は.'+hit_rate+'です。');
+    $("#total_ochiai").text('落合1985：全'+ochiai_result.daseki+'打席のうち、1塁打'+ochiai_result.single+'回、2塁打'+ochiai_result.double+'回、3塁打'+ochiai_result.triple+'回、ホームラン'+ochiai_result.homerun+'回、三振'+ochiai_result.strikeout+'回、四球'+ochiai_result.fourball+'回、凡打'+ochiai_result.mishit+'回、打率は'+hit_rate+'です。');
     if(out_num<3){
     return{
         out_num,
