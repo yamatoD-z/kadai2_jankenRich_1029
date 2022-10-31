@@ -32,30 +32,49 @@
     let runner = 0;
     let inning=1;
 
-    // 複数選手の累計データを保有するには、以下の変数だと不便になったので、オブジェクトを利用。
-    // let daseki =0;
-    // let single =0;
-    // let double =0;
-    // let triple =0;
-    // let homerun =0;
-    // let fourball =0;
-    // let strikeout =0;
-    // let mishit =0;
-    // let hit_rate = (single+double+triple+homerun)/(daseki-fourball);
+// 複数選手の累計データを保有するには、以下の変数だと不便になったので、オブジェクトを利用。
+// let daseki =0;
+// let single =0;
+// let double =0;
+// let triple =0;
+// let homerun =0;
+// let fourball =0;
+// let strikeout =0;
+// let mishit =0;
+// let hit_rate = (single+double+triple+homerun)/(daseki-fourball);
 
+// 選手打席データ
     let ochiai_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
-
+    let bass_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
+    let matsunaka_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
+    let murakami_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
 
     //  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
     let ochiai_record=[92,116,117,169,209,313,568];
-    console.log(ochiai_record);
+    let bass_record=[96,127,129,176,246,330,541];
+    let matsunaka_record=[89,126,127,171,238,334,577];
+    let murakami_record=[77,98,99,155,283,408,612];
 
     //  乱数は100で統一するので、上記結果を標準化
     let ochiai_record_standard=[];
     ochiai_record.forEach(function(value,index){
         ochiai_record_standard[index]=ochiai_record[index]/(ochiai_record[6]/100);
     });
-    console.log(ochiai_record_standard);
+        
+    let bass_record_standard=[];
+    bass_record.forEach(function(value,index){
+        bass_record_standard[index]=bass_record[index]/(bass_record[6]/100);
+    });
+    
+    let matsunaka_record_standard=[];
+    matsunaka_record.forEach(function(value,index){
+        matsunaka_record_standard[index]=matsunaka_record[index]/(matsunaka_record[6]/100);
+    });
+
+    let murakami_record_standard=[];
+    murakami_record.forEach(function(value,index){
+        murakami_record_standard[index]=murakami_record[index]/(murakami_record[6]/100);
+    });
 
     // 関数の呼び出しのテスト
     // function ochiai_console(msg){
@@ -68,9 +87,9 @@
 
 
    // 関数の切り出し
-    function ochiai_simulation(){
+    function simulation(result, record_standard, status_id, total_id, name_year){
 
-    ochiai_result.daseki ++;
+    result.daseki ++;
     let daseki =0;
     daseki++
 
@@ -80,7 +99,7 @@
     // }
     
     let probability = Math.random() * 100;
-    let record_view =ochiai_record_standard;
+    let record_view =record_standard;
     console.log(probability);
     // console.log((single+double+triple+homerun)/(daseki-fourball));
     
@@ -88,7 +107,7 @@
     if(probability<record_view[0]){            
         $("#result").text("シングルヒット");
         runner ++;
-        ochiai_result.single ++;
+        result.single ++;
         console.log("ヒット");
         if(runner>3){
             runner = 3;
@@ -97,7 +116,7 @@
         
     }else if(probability<record_view[1]){
         $("#result").text("2塁打");
-        ochiai_result.double ++;
+        result.double ++;
         console.log("2塁打");
         if(runner>=2){
             runner = 2;
@@ -107,7 +126,7 @@
         }
     }else if(probability<record_view[2]){
         $("#result").text("3塁打");
-        ochiai_result.triple ++;
+        result.triple ++;
         console.log("3塁打");
         score +=runner;
         runner=1;
@@ -115,7 +134,7 @@
     }else if(probability<record_view[3]){
         $("#result").text("ホームラン");
         score ++;
-        ochiai_result.homerun ++;
+        result.homerun ++;
         score +=runner;
         runner=0;
         console.log("ホームラン");
@@ -123,12 +142,12 @@
         $("#result").text("三振");
         out_num++;
         out_num_total++;
-        ochiai_result.strikeout ++;
+        result.strikeout ++;
         console.log("三振");
     }else if(probability<record_view[5]){            
         $("#result").text("四球・死球");
         runner ++;
-        ochiai_result.fourball ++;
+        result.fourball ++;
         console.log("四球・死球");
         if(runner>3){
             runner = 3;
@@ -138,7 +157,7 @@
         $("#result").text("アウト（ゴロ、フライ）");
         out_num++;
         out_num_total++;
-        ochiai_result.mishit ++;
+        result.mishit ++;
         console.log("アウト（ゴロ、フライ）");
     }
     //  // カウンタを動かす
@@ -150,14 +169,18 @@
     console.log(score,'score');
     console.log(runner,'runner');
     let averagecount = Math.floor(score/(inning /9)*100)/100;
-    ochiai_result.average_score=averagecount;
+    result.average_score=averagecount;
     let hit_rate = Math.floor(
-        (ochiai_result.single+ochiai_result.double+ochiai_result.triple+ochiai_result.homerun)/(ochiai_result.daseki-ochiai_result.fourball)*1000
+        (result.single+result.double+result.triple+result.homerun)/(result.daseki-result.fourball)*1000
         );
-    ochiai_result.hit_rate =hit_rate;
+    result.hit_rate =hit_rate;
      // カウンタを表示
-    $("#status_ochiai").text('落合1985：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とりました');
-    $("#total_ochiai").text('落合1985：全'+ochiai_result.daseki+'打席のうち、1塁打'+ochiai_result.single+'回、2塁打'+ochiai_result.double+'回、3塁打'+ochiai_result.triple+'回、ホームラン'+ochiai_result.homerun+'回、三振'+ochiai_result.strikeout+'回、四球'+ochiai_result.fourball+'回、凡打'+ochiai_result.mishit+'回、打率は.'+hit_rate+'です。');
+     
+    $(status_id).text(name_year+'：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とりました');
+    $(total_id).text(name_year+'：全'+result.daseki+'打席のうち、1塁打'+result.single+'回、2塁打'+result.double+'回、3塁打'+result.triple+'回、ホームラン'+result.homerun+'回、三振'+result.strikeout+'回、四球'+result.fourball+'回、凡打'+result.mishit+'回、打率は.'+hit_rate+'です。');
+    
+    // $("#status_ochiai").text('落合1985：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とりました');
+    // $("#total_ochiai").text('落合1985：全'+result.daseki+'打席のうち、1塁打'+result.single+'回、2塁打'+result.double+'回、3塁打'+result.triple+'回、ホームラン'+result.homerun+'回、三振'+result.strikeout+'回、四球'+result.fourball+'回、凡打'+result.mishit+'回、打率は.'+hit_rate+'です。');
     if(out_num<3){
     return{
         out_num,
@@ -178,25 +201,25 @@
 
     }
 
+    // まとめた関数を利用して、選手毎の引数を設定
+
     // 1.1打席毎計算
     // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
     $('#ochiai').on('click',function(){
-        ochiai_simulation();
+        simulation(ochiai_result, ochiai_record_standard, "#status_ochiai", "#total_ochiai", '落合1985');
     });
-
     // 2.9イニング毎計算。whileでやるしかない。
     $('#ochiai_nine').on('click',function(){
         out_num_total=0;
         while(out_num_total<27){
-        ochiai_simulation();
+        simulation(ochiai_result, ochiai_record_standard, "#status_ochiai", "#total_ochiai", '落合1985');
         }
     });
 
     // 3.100打席毎計算
     $('#ochiai_hundred').on('click',function(){
         for(let i =0; i<100; i++){
-            
-        ochiai_simulation();
+        simulation(ochiai_result, ochiai_record_standard, "#status_ochiai", "#total_ochiai", '落合1985');
         }
     });
 
@@ -233,164 +256,24 @@
     //     setTimeout(ochiai_simulation(),1000);}
     // });
 
-
-// バース対応
-// 落合をコピー後、Ctrl+hで置換
-
-    let bass_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
-
-
-    //  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
-    let bass_record=[96,127,129,176,246,330,541];
-    console.log(bass_record);
-
-    //  乱数は100で統一するので、上記結果を標準化
-    let bass_record_standard=[];
-    bass_record.forEach(function(value,index){
-        bass_record_standard[index]=bass_record[index]/(bass_record[6]/100);
-    });
-    console.log(bass_record_standard);
-
-    // 関数の呼び出しのテスト
-    // function bass_console(msg){
-    //     console.log(msg);
-    // }
-    // $('#bass_nine').on('click',function(){
-    //     bass_console(bass_record);
-    // });
-
-
-
-   // 関数の切り出し
-    function bass_simulation(){
-
-    bass_result.daseki ++;
-    let daseki =0;
-    daseki++
-
-    // // アウトが３未満なら、交代という表示を出さない
-    // if(out_num<3){
-    //     $("#stop-game").text("");
-    // }
-    
-    let probability = Math.random() * 100;
-    let record_view =bass_record_standard;
-    console.log(probability);
-    // console.log((single+double+triple+homerun)/(daseki-fourball));
-    
-    // 100までの乱数が結果配列のどの範囲に含まれるかで、結果を分別
-    if(probability<record_view[0]){            
-        $("#result").text("シングルヒット");
-        runner ++;
-        bass_result.single ++;
-        console.log("ヒット");
-        if(runner>3){
-            runner = 3;
-            score ++;
-        }
-        
-    }else if(probability<record_view[1]){
-        $("#result").text("2塁打");
-        bass_result.double ++;
-        console.log("2塁打");
-        if(runner>=2){
-            runner = 2;
-            score = score + runner -1;
-        }else{
-            runner ++;
-        }
-    }else if(probability<record_view[2]){
-        $("#result").text("3塁打");
-        bass_result.triple ++;
-        console.log("3塁打");
-        score +=runner;
-        runner=1;
-
-    }else if(probability<record_view[3]){
-        $("#result").text("ホームラン");
-        score ++;
-        bass_result.homerun ++;
-        score +=runner;
-        runner=0;
-        console.log("ホームラン");
-    }else if(probability<record_view[4]){
-        $("#result").text("三振");
-        out_num++;
-        out_num_total++;
-        bass_result.strikeout ++;
-        console.log("三振");
-    }else if(probability<record_view[5]){            
-        $("#result").text("四球・死球");
-        runner ++;
-        bass_result.fourball ++;
-        console.log("四球・死球");
-        if(runner>3){
-            runner = 3;
-            score ++;
-        }
-    }else if(probability<record_view[6]){
-        $("#result").text("アウト（ゴロ、フライ）");
-        out_num++;
-        out_num_total++;
-        bass_result.mishit ++;
-        console.log("アウト（ゴロ、フライ）");
-    }
-    //  // カウンタを動かす
-    // if(out_num===3){
-    //     $("#stop-game").text("3アウト交代");
-    // }
-
-    console.log(out_num,'out');
-    console.log(score,'score');
-    console.log(runner,'runner');
-    let averagecount = Math.floor(score/(inning /9)*100)/100;
-    bass_result.average_score=averagecount;
-    let hit_rate = Math.floor(
-        (bass_result.single+bass_result.double+bass_result.triple+bass_result.homerun)/(bass_result.daseki-bass_result.fourball)*1000
-        );
-    bass_result.hit_rate =hit_rate;
-     // カウンタを表示
-    $("#status_bass").text('バース1986：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとりました。1試合平均では'+averagecount+'点、とられています');
-    $("#total_bass").text('バース1986：全'+bass_result.daseki+'打席のうち、1塁打'+bass_result.single+'回、2塁打'+bass_result.double+'回、3塁打'+bass_result.triple+'回、ホームラン'+bass_result.homerun+'回、三振'+bass_result.strikeout+'回、四球'+bass_result.fourball+'回、凡打'+bass_result.mishit+'回、打率は.'+hit_rate+'です。');
-    if(out_num<3){
-    return{
-        out_num,
-        score,
-        runner,
-    }
-    }else{
-    out_num=0;
-    runner=0;
-    inning++;
-    return{
-        out_num,
-        score,
-        runner,
-        inning
-        }
-        }
-
-    }
-
     // 1.1打席毎計算
     // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
     $('#bass').on('click',function(){
-        bass_simulation();
+        simulation(bass_result, bass_record_standard, "#status_bass", "#total_bass", 'バース1986');
     });
 
     // 2.9イニング毎計算。whileでやるしかない。
     $('#bass_nine').on('click',function(){
         out_num_total=0;
         while(out_num_total<27){
-        bass_simulation();
+            simulation(bass_result, bass_record_standard, "#status_bass", "#total_bass", 'バース1986');
         }
     });
 
     // 3.100打席毎計算
     $('#bass_hundred').on('click',function(){
         for(let i =0; i<100; i++){
-            
-        bass_simulation();
+            simulation(bass_result, bass_record_standard, "#status_bass", "#total_bass", 'バース1986');
         }
     });
 
@@ -421,160 +304,24 @@
         });
 
 // 松中対応
-let matsunaka_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
-
-
-//  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
-let matsunaka_record=[96,127,129,176,246,330,541];
-console.log(matsunaka_record);
-
-//  乱数は100で統一するので、上記結果を標準化
-let matsunaka_record_standard=[];
-matsunaka_record.forEach(function(value,index){
-    matsunaka_record_standard[index]=matsunaka_record[index]/(matsunaka_record[6]/100);
-});
-console.log(matsunaka_record_standard);
-
-// 関数の呼び出しのテスト
-// function matsunaka_console(msg){
-//     console.log(msg);
-// }
-// $('#matsunaka_nine').on('click',function(){
-//     matsunaka_console(matsunaka_record);
-// });
-
-
-
-// 関数の切り出し
-function matsunaka_simulation(){
-
-matsunaka_result.daseki ++;
-let daseki =0;
-daseki++
-
-// // アウトが３未満なら、交代という表示を出さない
-// if(out_num<3){
-//     $("#stop-game").text("");
-// }
-
-let probability = Math.random() * 100;
-let record_view =matsunaka_record_standard;
-console.log(probability);
-// console.log((single+double+triple+homerun)/(daseki-fourball));
-
-// 100までの乱数が結果配列のどの範囲に含まれるかで、結果を分別
-if(probability<record_view[0]){            
-    $("#result").text("シングルヒット");
-    runner ++;
-    matsunaka_result.single ++;
-    console.log("ヒット");
-    if(runner>3){
-        runner = 3;
-        score ++;
-    }
-    
-}else if(probability<record_view[1]){
-    $("#result").text("2塁打");
-    matsunaka_result.double ++;
-    console.log("2塁打");
-    if(runner>=2){
-        runner = 2;
-        score = score + runner -1;
-    }else{
-        runner ++;
-    }
-}else if(probability<record_view[2]){
-    $("#result").text("3塁打");
-    matsunaka_result.triple ++;
-    console.log("3塁打");
-    score +=runner;
-    runner=1;
-
-}else if(probability<record_view[3]){
-    $("#result").text("ホームラン");
-    score ++;
-    matsunaka_result.homerun ++;
-    score +=runner;
-    runner=0;
-    console.log("ホームラン");
-}else if(probability<record_view[4]){
-    $("#result").text("三振");
-    out_num++;
-    out_num_total++;
-    matsunaka_result.strikeout ++;
-    console.log("三振");
-}else if(probability<record_view[5]){            
-    $("#result").text("四球・死球");
-    runner ++;
-    matsunaka_result.fourball ++;
-    console.log("四球・死球");
-    if(runner>3){
-        runner = 3;
-        score ++;
-    }
-}else if(probability<record_view[6]){
-    $("#result").text("アウト（ゴロ、フライ）");
-    out_num++;
-    out_num_total++;
-    matsunaka_result.mishit ++;
-    console.log("アウト（ゴロ、フライ）");
-}
-//  // カウンタを動かす
-// if(out_num===3){
-//     $("#stop-game").text("3アウト交代");
-// }
-
-console.log(out_num,'out');
-console.log(score,'score');
-console.log(runner,'runner');
-let averagecount = Math.floor(score/(inning /9)*100)/100;
-matsunaka_result.average_score=averagecount;
-let hit_rate = Math.floor(
-    (matsunaka_result.single+matsunaka_result.double+matsunaka_result.triple+matsunaka_result.homerun)/(matsunaka_result.daseki-matsunaka_result.fourball)*1000
-    );
-matsunaka_result.hit_rate =hit_rate;
- // カウンタを表示
-$("#status_matsunaka").text('松中2004：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とりました。');
-$("#total_matsunaka").text('松中2004：全'+matsunaka_result.daseki+'打席のうち、1塁打'+matsunaka_result.single+'回、2塁打'+matsunaka_result.double+'回、3塁打'+matsunaka_result.triple+'回、ホームラン'+matsunaka_result.homerun+'回、三振'+matsunaka_result.strikeout+'回、四球'+matsunaka_result.fourball+'回、凡打'+matsunaka_result.mishit+'回、打率は.'+hit_rate+'です。');
-if(out_num<3){
-return{
-    out_num,
-    score,
-    runner,
-}
-}else{
-out_num=0;
-runner=0;
-inning++;
-return{
-    out_num,
-    score,
-    runner,
-    inning
-    }
-    }
-
-}
-
 // 1.1打席毎計算
 // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
 $('#matsunaka').on('click',function(){
-    matsunaka_simulation();
+    simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
 });
 
 // 2.9イニング毎計算。whileでやるしかない。
 $('#matsunaka_nine').on('click',function(){
     out_num_total=0;
     while(out_num_total<27){
-    matsunaka_simulation();
+        simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
     }
 });
 
 // 3.100打席毎計算
 $('#matsunaka_hundred').on('click',function(){
-    for(let i =0; i<100; i++){
-        
-    matsunaka_simulation();
+    for(let i =0; i<100; i++){        
+        simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
     }
 });
 
@@ -607,162 +354,24 @@ $('#matsunaka_inherit').on('click',function(){
 
 
 // 村上対応
-
-
-let murakami_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
-
-
-//  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
-let murakami_record=[96,127,129,176,246,330,541];
-console.log(murakami_record);
-
-//  乱数は100で統一するので、上記結果を標準化
-let murakami_record_standard=[];
-murakami_record.forEach(function(value,index){
-    murakami_record_standard[index]=murakami_record[index]/(murakami_record[6]/100);
-});
-console.log(murakami_record_standard);
-
-// 関数の呼び出しのテスト
-// function murakami_console(msg){
-//     console.log(msg);
-// }
-// $('#murakami_nine').on('click',function(){
-//     murakami_console(murakami_record);
-// });
-
-
-
-// 関数の切り出し
-function murakami_simulation(){
-
-murakami_result.daseki ++;
-let daseki =0;
-daseki++
-
-// // アウトが３未満なら、交代という表示を出さない
-// if(out_num<3){
-//     $("#stop-game").text("");
-// }
-
-let probability = Math.random() * 100;
-let record_view =murakami_record_standard;
-console.log(probability);
-// console.log((single+double+triple+homerun)/(daseki-fourball));
-
-// 100までの乱数が結果配列のどの範囲に含まれるかで、結果を分別
-if(probability<record_view[0]){            
-    $("#result").text("シングルヒット");
-    runner ++;
-    murakami_result.single ++;
-    console.log("ヒット");
-    if(runner>3){
-        runner = 3;
-        score ++;
-    }
-    
-}else if(probability<record_view[1]){
-    $("#result").text("2塁打");
-    murakami_result.double ++;
-    console.log("2塁打");
-    if(runner>=2){
-        runner = 2;
-        score = score + runner -1;
-    }else{
-        runner ++;
-    }
-}else if(probability<record_view[2]){
-    $("#result").text("3塁打");
-    murakami_result.triple ++;
-    console.log("3塁打");
-    score +=runner;
-    runner=1;
-
-}else if(probability<record_view[3]){
-    $("#result").text("ホームラン");
-    score ++;
-    murakami_result.homerun ++;
-    score +=runner;
-    runner=0;
-    console.log("ホームラン");
-}else if(probability<record_view[4]){
-    $("#result").text("三振");
-    out_num++;
-    out_num_total++;
-    murakami_result.strikeout ++;
-    console.log("三振");
-}else if(probability<record_view[5]){            
-    $("#result").text("四球・死球");
-    runner ++;
-    murakami_result.fourball ++;
-    console.log("四球・死球");
-    if(runner>3){
-        runner = 3;
-        score ++;
-    }
-}else if(probability<record_view[6]){
-    $("#result").text("アウト（ゴロ、フライ）");
-    out_num++;
-    out_num_total++;
-    murakami_result.mishit ++;
-    console.log("アウト（ゴロ、フライ）");
-}
-//  // カウンタを動かす
-// if(out_num===3){
-//     $("#stop-game").text("3アウト交代");
-// }
-
-console.log(out_num,'out');
-console.log(score,'score');
-console.log(runner,'runner');
-let averagecount = Math.floor(score/(inning /9)*100)/100;
-murakami_result.average_score=averagecount;
-let hit_rate = Math.floor(
-    (murakami_result.single+murakami_result.double+murakami_result.triple+murakami_result.homerun)/(murakami_result.daseki-murakami_result.fourball)*1000
-    );
-murakami_result.hit_rate =hit_rate;
- // カウンタを表示
-$("#status_murakami").text('村上2022：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとりました。1試合平均では'+averagecount+'点、とられています');
-$("#total_murakami").text('村上2022：全'+murakami_result.daseki+'打席のうち、1塁打'+murakami_result.single+'回、2塁打'+murakami_result.double+'回、3塁打'+murakami_result.triple+'回、ホームラン'+murakami_result.homerun+'回、三振'+murakami_result.strikeout+'回、四球'+murakami_result.fourball+'回、凡打'+murakami_result.mishit+'回、打率は.'+hit_rate+'です。');
-if(out_num<3){
-return{
-    out_num,
-    score,
-    runner,
-}
-}else{
-out_num=0;
-runner=0;
-inning++;
-return{
-    out_num,
-    score,
-    runner,
-    inning
-    }
-    }
-
-}
-
 // 1.1打席毎計算
 // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
 $('#murakami').on('click',function(){
-    murakami_simulation();
+    simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
 });
 
 // 2.9イニング毎計算。whileでやるしかない。
 $('#murakami_nine').on('click',function(){
     out_num_total=0;
     while(out_num_total<27){
-    murakami_simulation();
+    simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
     }
 });
 
 // 3.100打席毎計算
 $('#murakami_hundred').on('click',function(){
-    for(let i =0; i<100; i++){
-        
-    murakami_simulation();
+    for(let i =0; i<100; i++){        
+    simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
     }
 });
 
