@@ -22,8 +22,9 @@
 // 確率は、年間結果を踏まえて、［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球、死球、アウト（ゴロ、フライ）］
 // // 【精緻化や改善点】
 // １．投球数、ヒット数など1試合の合計値、それに基づく打率などの表示。
-// 2．選手毎の結果累計をローカルストレージに保存させる。
+// 2．選手毎の結果累計をローカルストレージに保存させる。ブラウザ更新後も継承を行うことで、続きからデータを足していける
 // 3.ヒットの内容を踏まえた進塁の考慮(ランナー3人いて二塁打なら２点はいる、など)
+// ４．9回一括、100打席一括の繰り返し処理
 
 //    各種カウントの設定
     let out_num = 0;
@@ -49,13 +50,13 @@
     let matsunaka_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
     let murakami_result = {daseki:0,single:0,double:0,triple:0,homerun:0,fourball:0,strikeout:0,mishit:0,hit_rate:0,average_score:0};
 
-    //  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
+//  左から、累計で［シングルヒット、2ベースヒット、3ベースヒット、ホームラン、三振、四球・死球、アウト（ゴロ、フライ）］
     let ochiai_record=[92,116,117,169,209,313,568];
     let bass_record=[96,127,129,176,246,330,541];
     let matsunaka_record=[89,126,127,171,238,334,577];
     let murakami_record=[77,98,99,155,283,408,612];
 
-    //  乱数は100で統一するので、上記結果を標準化
+//  乱数は100で統一するので、上記結果を標準化
     let ochiai_record_standard=[];
     ochiai_record.forEach(function(value,index){
         ochiai_record_standard[index]=ochiai_record[index]/(ochiai_record[6]/100);
@@ -76,33 +77,17 @@
         murakami_record_standard[index]=murakami_record[index]/(murakami_record[6]/100);
     });
 
-    // 関数の呼び出しのテスト
-    // function ochiai_console(msg){
-    //     console.log(msg);
-    // }
-    // $('#ochiai_nine').on('click',function(){
-    //     ochiai_console(ochiai_record);
-    // });
-
-
-
-   // 関数の切り出し
+// 関数の切り出し
     function simulation(result, record_standard, status_id, total_id, name_year){
 
     result.daseki ++;
     let daseki =0;
     daseki++
 
-    // // アウトが３未満なら、交代という表示を出さない
-    // if(out_num<3){
-    //     $("#stop-game").text("");
-    // }
-    
     let probability = Math.random() * 100;
     let record_view =record_standard;
     console.log(probability);
-    // console.log((single+double+triple+homerun)/(daseki-fourball));
-    
+
     // 100までの乱数が結果配列のどの範囲に含まれるかで、結果を分別
     if(probability<record_view[0]){            
         $("#result").text("シングルヒット");
@@ -112,8 +97,7 @@
         if(runner>3){
             runner = 3;
             score ++;
-        }
-        
+        }        
     }else if(probability<record_view[1]){
         $("#result").text("2塁打");
         result.double ++;
@@ -130,7 +114,6 @@
         console.log("3塁打");
         score +=runner;
         runner=1;
-
     }else if(probability<record_view[3]){
         $("#result").text("ホームラン");
         score ++;
@@ -160,10 +143,6 @@
         result.mishit ++;
         console.log("アウト（ゴロ、フライ）");
     }
-    //  // カウンタを動かす
-    // if(out_num===3){
-    //     $("#stop-game").text("3アウト交代");
-    // }
 
     console.log(out_num,'out');
     console.log(score,'score');
@@ -173,14 +152,10 @@
     let hit_rate = Math.floor(
         (result.single+result.double+result.triple+result.homerun)/(result.daseki-result.fourball)*1000
         );
-    result.hit_rate =hit_rate;
-     // カウンタを表示
-     
+    result.hit_rate =hit_rate;     
     $(status_id).text(name_year+'：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とりました');
     $(total_id).text(name_year+'：全'+result.daseki+'打席のうち、1塁打'+result.single+'回、2塁打'+result.double+'回、3塁打'+result.triple+'回、ホームラン'+result.homerun+'回、三振'+result.strikeout+'回、四球'+result.fourball+'回、凡打'+result.mishit+'回、打率は.'+hit_rate+'です。');
     
-    // $("#status_ochiai").text('落合1985：'+inning+'回、'+out_num+'アウト、'+runner+'人が出塁中、'+'ここまで'+score+'点をとられました。1試合平均では'+averagecount+'点、とりました');
-    // $("#total_ochiai").text('落合1985：全'+result.daseki+'打席のうち、1塁打'+result.single+'回、2塁打'+result.double+'回、3塁打'+result.triple+'回、ホームラン'+result.homerun+'回、三振'+result.strikeout+'回、四球'+result.fourball+'回、凡打'+result.mishit+'回、打率は.'+hit_rate+'です。');
     if(out_num<3){
     return{
         out_num,
@@ -197,12 +172,13 @@
         runner,
         inning
         }
-        }
+    }
 
     }
 
-    // まとめた関数を利用して、選手毎の引数を設定
+// まとめた関数を利用して、選手毎の引数を設定
 
+// 落合対応
     // 1.1打席毎計算
     // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
     $('#ochiai').on('click',function(){
@@ -256,6 +232,7 @@
     //     setTimeout(ochiai_simulation(),1000);}
     // });
 
+// バース対応
     // 1.1打席毎計算
     // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
     $('#bass').on('click',function(){
@@ -304,99 +281,99 @@
         });
 
 // 松中対応
-// 1.1打席毎計算
-// clickのあとに直接、関数名を入れても動かなくてエラーが出る。
-$('#matsunaka').on('click',function(){
-    simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
-});
-
-// 2.9イニング毎計算。whileでやるしかない。
-$('#matsunaka_nine').on('click',function(){
-    out_num_total=0;
-    while(out_num_total<27){
+    // 1.1打席毎計算
+    // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
+    $('#matsunaka').on('click',function(){
         simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
-    }
-});
-
-// 3.100打席毎計算
-$('#matsunaka_hundred').on('click',function(){
-    for(let i =0; i<100; i++){        
-        simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
-    }
-});
-
-// 4.総データを記録
-$('#matsunaka_add').on('click',function(){
-    Object.keys(matsunaka_result).forEach(function(key){
-    localStorage.setItem('matsunaka_result_'+key,matsunaka_result[key]);
-    });
-    alert("successfully saved");
     });
 
-// 5.総データを破棄
-$('#matsunaka_delete').on('click',function(){
-    Object.keys(matsunaka_result).forEach(function(key){
-    localStorage.removeItem('matsunaka_result_'+key);
-    });
-    alert("successfully deleted");
+    // 2.9イニング毎計算。whileでやるしかない。
+    $('#matsunaka_nine').on('click',function(){
+        out_num_total=0;
+        while(out_num_total<27){
+            simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
+        }
     });
 
-// 6.データを継承（ローカルストレージの内容を取り込む）
-// ブラウザを更新しても、継承後、続きから再開できる。ただし、記録していることが前提
-$('#matsunaka_inherit').on('click',function(){
-    Object.keys(matsunaka_result).forEach(function(key){
-    matsunaka_result[key]=localStorage.getItem('matsunaka_result_'+key);
+    // 3.100打席毎計算
+    $('#matsunaka_hundred').on('click',function(){
+        for(let i =0; i<100; i++){        
+            simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
+        }
     });
-    console.log(matsunaka_result);
-    alert("successfully inherited");
-    });
+
+    // 4.総データを記録
+    $('#matsunaka_add').on('click',function(){
+        Object.keys(matsunaka_result).forEach(function(key){
+        localStorage.setItem('matsunaka_result_'+key,matsunaka_result[key]);
+        });
+        alert("successfully saved");
+        });
+
+    // 5.総データを破棄
+    $('#matsunaka_delete').on('click',function(){
+        Object.keys(matsunaka_result).forEach(function(key){
+        localStorage.removeItem('matsunaka_result_'+key);
+        });
+        alert("successfully deleted");
+        });
+
+    // 6.データを継承（ローカルストレージの内容を取り込む）
+    // ブラウザを更新しても、継承後、続きから再開できる。ただし、記録していることが前提
+    $('#matsunaka_inherit').on('click',function(){
+        Object.keys(matsunaka_result).forEach(function(key){
+        matsunaka_result[key]=localStorage.getItem('matsunaka_result_'+key);
+        });
+        console.log(matsunaka_result);
+        alert("successfully inherited");
+        });
 
 
 
 // 村上対応
-// 1.1打席毎計算
-// clickのあとに直接、関数名を入れても動かなくてエラーが出る。
-$('#murakami').on('click',function(){
-    simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
-});
-
-// 2.9イニング毎計算。whileでやるしかない。
-$('#murakami_nine').on('click',function(){
-    out_num_total=0;
-    while(out_num_total<27){
-    simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
-    }
-});
-
-// 3.100打席毎計算
-$('#murakami_hundred').on('click',function(){
-    for(let i =0; i<100; i++){        
-    simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
-    }
-});
-
-// 4.総データを記録
-$('#murakami_add').on('click',function(){
-    Object.keys(murakami_result).forEach(function(key){
-    localStorage.setItem('murakami_result_'+key,murakami_result[key]);
-    });
-    alert("successfully saved");
+    // 1.1打席毎計算
+    // clickのあとに直接、関数名を入れても動かなくてエラーが出る。
+    $('#murakami').on('click',function(){
+        simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
     });
 
-// 5.総データを破棄
-$('#murakami_delete').on('click',function(){
-    Object.keys(murakami_result).forEach(function(key){
-    localStorage.removeItem('murakami_result_'+key);
-    });
-    alert("successfully deleted");
+    // 2.9イニング毎計算。whileでやるしかない。
+    $('#murakami_nine').on('click',function(){
+        out_num_total=0;
+        while(out_num_total<27){
+        simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
+        }
     });
 
-// 6.データを継承（ローカルストレージの内容を取り込む）
-// ブラウザを更新しても、継承後、続きから再開できる。ただし、記録していることが前提
-$('#murakami_inherit').on('click',function(){
-    Object.keys(murakami_result).forEach(function(key){
-    murakami_result[key]=localStorage.getItem('murakami_result_'+key);
+    // 3.100打席毎計算
+    $('#murakami_hundred').on('click',function(){
+        for(let i =0; i<100; i++){        
+        simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
+        }
     });
-    console.log(murakami_result);
-    alert("successfully inherited");
-    });
+
+    // 4.総データを記録
+    $('#murakami_add').on('click',function(){
+        Object.keys(murakami_result).forEach(function(key){
+        localStorage.setItem('murakami_result_'+key,murakami_result[key]);
+        });
+        alert("successfully saved");
+        });
+
+    // 5.総データを破棄
+    $('#murakami_delete').on('click',function(){
+        Object.keys(murakami_result).forEach(function(key){
+        localStorage.removeItem('murakami_result_'+key);
+        });
+        alert("successfully deleted");
+        });
+
+    // 6.データを継承（ローカルストレージの内容を取り込む）
+    // ブラウザを更新しても、継承後、続きから再開できる。ただし、記録していることが前提
+    $('#murakami_inherit').on('click',function(){
+        Object.keys(murakami_result).forEach(function(key){
+        murakami_result[key]=localStorage.getItem('murakami_result_'+key);
+        });
+        console.log(murakami_result);
+        alert("successfully inherited");
+        });
