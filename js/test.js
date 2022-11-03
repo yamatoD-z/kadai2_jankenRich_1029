@@ -227,9 +227,9 @@
         }
     });
 
-    // 3.100打席毎計算
+    // 3.600打席毎計算
     $('#ochiai_hundred').on('click',function(){
-        for(let i =0; i<100; i++){
+        for(let i =0; i<600; i++){
         simulation(ochiai_result, ochiai_record_standard, "#status_ochiai", "#total_ochiai", '落合1985');
         }
     });
@@ -282,9 +282,9 @@
         }
     });
 
-    // 3.100打席毎計算
+    // 3.600打席毎計算
     $('#bass_hundred').on('click',function(){
-        for(let i =0; i<100; i++){
+        for(let i =0; i<600; i++){
             simulation(bass_result, bass_record_standard, "#status_bass", "#total_bass", 'バース1986');
         }
     });
@@ -330,9 +330,9 @@
         }
     });
 
-    // 3.100打席毎計算
+    // 3.600打席毎計算
     $('#matsunaka_hundred').on('click',function(){
-        for(let i =0; i<100; i++){        
+        for(let i =0; i<600; i++){        
             simulation(matsunaka_result, matsunaka_record_standard, "#status_matsunaka", "#total_matsunaka", '松中2004');
         }
     });
@@ -380,9 +380,9 @@
         }
     });
 
-    // 3.100打席毎計算
+    // 3.600打席毎計算
     $('#murakami_hundred').on('click',function(){
-        for(let i =0; i<100; i++){        
+        for(let i =0; i<600; i++){        
         simulation(murakami_result, murakami_record_standard, "#status_murakami", "#total_murakami", '村上2022');
         }
     });
